@@ -37,4 +37,32 @@ public class ToDoController {
         return new ResponseEntity<>("Todo created successfully", HttpStatus.CREATED);
     }
 
+    @PatchMapping("/title/{id}")
+    public ResponseEntity<String> updateTodoTitle(@RequestBody ToDo todo, @PathVariable Long id) {
+        if (todo == null || id < 0) {
+            return ResponseEntity.badRequest().body("Bad request");
+        }
+
+        ToDo updatedTodo = service.updateTodoTitle(id, todo.getTitle());
+        if (updatedTodo == null) {
+            return ResponseEntity.badRequest().body("Failed to update todo.");
+        }
+
+        return new ResponseEntity<>("Todo updated successfully", HttpStatus.OK);
+    }
+
+    @PatchMapping("/status/{id}")
+    public ResponseEntity<String> updateTodoStatus(@RequestBody ToDo todo, @PathVariable Long id) {
+        if (todo == null || id < 0) {
+            return ResponseEntity.badRequest().body("Bad request");
+        }
+
+        ToDo updatedTodo = service.updateTodoStatus(id, todo.isCompleted());
+        if (updatedTodo == null) {
+            return ResponseEntity.badRequest().body("Failed to update todo.");
+        }
+
+        return new ResponseEntity<>("Todo updated successfully", HttpStatus.OK);
+    }
+
 }
